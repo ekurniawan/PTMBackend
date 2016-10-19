@@ -19,6 +19,9 @@ namespace PTMBackend
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            //konfigurasi untuk menghapus xml format
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
         }
     }
 }

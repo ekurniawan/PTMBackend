@@ -74,7 +74,7 @@ namespace PTMBackend.DAL
                 var param = new
                 {
                     IdTipeStatus = tipestatus.IdTipeStatus,
-                    NamaStatus = tipestatus.NamaTipe
+                    NamaTipe = tipestatus.NamaTipe
                 };
 
                 try

@@ -190,6 +190,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PenggunaController.cs" />
+    <Compile Include="Controllers\TipeStatusController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DAL\PenggunaDAL.cs" />
     <Compile Include="DAL\TipeStatusDAL.cs" />
