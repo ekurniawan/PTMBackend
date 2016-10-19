@@ -68,8 +68,8 @@ namespace PTMBackend.DAL
         {
             using (SqlConnection conn = new SqlConnection(GetConnString()))
             {
-                var strSql = @"insert into TipeStatus(IdTipeStatus,NamaStatus) 
-                               values(@IdTipeStatus,@NamaStatus)";
+                var strSql = @"insert into TipeStatus(IdTipeStatus,NamaTipe) 
+                               values(@IdTipeStatus,@NamaTipe)";
 
                 var param = new
                 {
@@ -77,6 +77,49 @@ namespace PTMBackend.DAL
                     NamaStatus = tipestatus.NamaTipe
                 };
 
+                try
+                {
+                    conn.Execute(strSql, param);
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception(sqlEx.Message);
+                }
+            }
+        }
+
+        public void Update(TipeStatus tipestatus)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnString()))
+            {
+                var strSql = @"update TipeStatus set NamaTipe=@NamaTipe 
+                               where IdTipeStatus=@IdTipeStatus";
+
+                var param = new
+                {
+                    NamaTipe = tipestatus.NamaTipe,
+                    IdTipeStatus = tipestatus.IdTipeStatus
+                };
+
+                try
+                {
+                    conn.Execute(strSql, param);
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception(sqlEx.Message);
+                }
+            }
+        }
+
+        public void Delete(TipeStatus tipestatus)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnString()))
+            {
+                var strSql = @"delete from TipeStatus 
+                               where IdTipeStatus=@IdTipeStatus";
+
+                var param = new { IdTipeStatus = tipestatus.IdTipeStatus };
                 try
                 {
                     conn.Execute(strSql, param);
