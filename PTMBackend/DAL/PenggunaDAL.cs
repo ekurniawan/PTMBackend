@@ -17,7 +17,7 @@ namespace PTMBackend.DAL
             return ConfigurationManager.ConnectionStrings["PTMDbConnectionString"].ConnectionString;
         }
 
-        public Pengguna GetLogin(string username,string password)
+        public Pengguna GetLogin(Pengguna model)
         {
             using (SqlConnection conn = new SqlConnection(GetConnString()))
             {
@@ -28,9 +28,13 @@ namespace PTMBackend.DAL
                 var pengguna = conn.Query<Pengguna, TipeUser, Pengguna>(strSql, (p, t) => {
                     p.TipeUser = t;
                     return p;
-                }, new { Username = username, Password = password }, splitOn: "IdTipeUser");
+                }, new { Username = model.Username, Password = model.Password }, splitOn: "IdTipeUser");
 
-                return pengguna.FirstOrDefault();
+
+                if (pengguna.Count() == 0)
+                    return null;
+                else
+                    return pengguna.FirstOrDefault();
             }
         } 
     }
