@@ -112,14 +112,14 @@ namespace PTMBackend.DAL
             }
         }
 
-        public void Delete(TipeStatus tipestatus)
+        public void Delete(string id)
         {
             using (SqlConnection conn = new SqlConnection(GetConnString()))
             {
                 var strSql = @"delete from TipeStatus 
                                where IdTipeStatus=@IdTipeStatus";
 
-                var param = new { IdTipeStatus = tipestatus.IdTipeStatus };
+                var param = new { IdTipeStatus = id };
                 try
                 {
                     conn.Execute(strSql, param);

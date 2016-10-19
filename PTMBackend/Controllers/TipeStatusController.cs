@@ -43,13 +43,54 @@ namespace PTMBackend.Controllers
         }
 
         // PUT: api/TipeStatus/5
-        public void Put(int id, [FromBody]string value)
+        public IHttpActionResult Put(string id,TipeStatus tipestatus)
         {
+            TipeStatusDAL tipeStatusDAL = new TipeStatusDAL();
+
+            var result = tipeStatusDAL.GetById(id);
+
+            if(result!=null)
+            {
+                try
+                {
+                    result.NamaTipe = tipestatus.NamaTipe;
+                    tipeStatusDAL.Update(result);
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            else
+            {
+                return BadRequest("Data not found !");
+            }
         }
 
         // DELETE: api/TipeStatus/5
-        public void Delete(int id)
+        public IHttpActionResult Delete(string id)
         {
+            TipeStatusDAL tipeStatusDAL = new TipeStatusDAL();
+
+            var result = tipeStatusDAL.GetById(id);
+
+            if (result != null)
+            {
+                try
+                {
+                    tipeStatusDAL.Delete(id);
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            else
+            {
+                return BadRequest("Data not found !");
+            }
         }
     }
 }
