@@ -188,16 +188,19 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\COIDetailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PenggunaController.cs" />
     <Compile Include="Controllers\TipeStatusController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="DAL\COIDetailDAL.cs" />
     <Compile Include="DAL\PenggunaDAL.cs" />
     <Compile Include="DAL\TipeStatusDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BusinessObject.cs" />
+    <Compile Include="Models\CIStatusView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
