@@ -7,6 +7,7 @@ using PTMBackend.Models;
 using System.Data.SqlClient;
 using System.Configuration;
 using Dapper;
+using System.Data;
 
 namespace PTMBackend.DAL
 {
@@ -21,9 +22,11 @@ namespace PTMBackend.DAL
         {
             using (SqlConnection conn = new SqlConnection(GetConnString()))
             {
-                string strSQL = @"select * from TipeStatus order by NamaTipe asc";
+                string strSQL = @"SP_GetAllTipeStatus";
 
-                var results = conn.Query<TipeStatus>(strSQL);
+                var results = conn.Query<TipeStatus>(strSQL, 
+                    commandType:CommandType.StoredProcedure);
+
                 return results;
 
 
@@ -43,6 +46,45 @@ namespace PTMBackend.DAL
                     }
                 }
                 return lstTipe;*/
+            }
+        }
+
+        public TipeStatus GetById(string id)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnString()))
+            {
+                var strSql = @"SP_GetByIdTipeStatus";
+
+                var param = new { IdTipeStatus = id };
+
+                var results = conn.Query<TipeStatus>(strSql,
+                  param, commandType: CommandType.StoredProcedure);
+
+                return results.FirstOrDefault(); 
+            }
+        }
+
+        public void Insert(TipeStatus tipestatus)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnString()))
+            {
+                var strSql = @"insert into TipeStatus(IdTipeStatus,NamaStatus) 
+                               values(@IdTipeStatus,@NamaStatus)";
+
+                var param = new
+                {
+                    IdTipeStatus = tipestatus.IdTipeStatus,
+                    NamaStatus = tipestatus.NamaTipe
+                };
+
+                try
+                {
+                    conn.Execute(strSql, param);
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception(sqlEx.Message);
+                }
             }
         }
     }
