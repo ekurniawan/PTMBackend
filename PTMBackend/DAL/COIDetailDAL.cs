@@ -30,5 +30,71 @@ namespace PTMBackend.DAL
                 return results;
             }
         }
+
+
+        public IEnumerable<COIDetail> GetCOIByStatus(string id)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnString()))
+            {
+                var strSql = @"select * from COIDetail left join TipeStatus
+                               on COIDetail.IdTipeStatus=TipeStatus.IdTipeStatus
+                               where COIDetail.IdTipeStatus=@IdTipeStatus";
+
+                var param = new { IdTipeStatus = id };
+                var results = conn.Query<COIDetail, TipeStatus, COIDetail>(strSql, (c, t) =>
+                {
+                    c.TipeStatus = t;
+                    return c;
+                }, param, splitOn: "IdTipeStatus");
+
+                return results;
+            }
+        }
+
+
+        public COIDetail GetCOIById(string coiNumber)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnString()))
+            {
+                var strSql = @"select * from COIDetail where COINumber=@COINumber";
+                var param = new { COINumber = coiNumber };
+                var results = conn.Query<COIDetail>(strSql, param);
+
+                if (results.Count() > 0)
+                    return results.FirstOrDefault();
+                else
+                    return null;
+            }
+        }
+
+        public void Update(string id,COIDetail model)
+        {
+            var result = GetCOIById(id);
+            if(result!=null)
+            {
+                using (SqlConnection conn = new SqlConnection(GetConnString()))
+                {
+                    var strSql = @"update COIDetail set IdTipeStatus=@IdTipeStatus 
+                                   where COINumber=@COINumber";
+                    try
+                    {
+                        var param = new
+                        {
+                            IdTipeStatus = model.IdTipeStatus,
+                            COINumber = id
+                        };
+                        conn.Execute(strSql, param);
+                    }
+                    catch (SqlException sqlEx)
+                    {
+                        throw new Exception(sqlEx.Message);
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception("Data Not Found !");
+            }
+        }
     }
 }
