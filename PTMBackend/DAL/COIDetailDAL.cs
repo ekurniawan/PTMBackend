@@ -51,14 +51,38 @@ namespace PTMBackend.DAL
             }
         }
 
+        public IEnumerable<COIDetail> GetCOIByNamaStatus(string nama)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnString()))
+            {
+                var strSql = @"select * from COIDetail left join TipeStatus
+                               on COIDetail.IdTipeStatus=TipeStatus.IdTipeStatus
+                               where TipeStatus.NamaTipe=@NamaTipe";
+
+                var param = new { NamaTipe = nama };
+                var results = conn.Query<COIDetail, TipeStatus, COIDetail>(strSql, (c, t) =>
+                {
+                    c.TipeStatus = t;
+                    return c;
+                }, param, splitOn: "IdTipeStatus");
+
+                return results;
+            }
+        }
+
 
         public COIDetail GetCOIById(string coiNumber)
         {
             using (SqlConnection conn = new SqlConnection(GetConnString()))
             {
-                var strSql = @"select * from COIDetail where COINumber=@COINumber";
+                var strSql = @"select * from COIDetail left join TipeStatus
+                               on COIDetail.IdTipeStatus=TipeStatus.IdTipeStatus
+                               where COINumber=@COINumber";
                 var param = new { COINumber = coiNumber };
-                var results = conn.Query<COIDetail>(strSql, param);
+                var results = conn.Query<COIDetail,TipeStatus,COIDetail>(strSql, (c,t)=> {
+                    c.TipeStatus = t;
+                    return c;
+                }, param,splitOn: "IdTipeStatus");
 
                 if (results.Count() > 0)
                     return results.FirstOrDefault();

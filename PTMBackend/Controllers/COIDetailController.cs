@@ -25,10 +25,25 @@ namespace PTMBackend.Controllers
             return coiDetailDAL.GetCOIStatus();
         }
 
-        // GET: api/COIDetail/5
-        public string Get(int id)
+        [Route("api/COIDetail/GetCOIByStatus/{id}")]
+        public IEnumerable<COIDetail> GetCOIByStatus(string id)
         {
-            return "value";
+            COIDetailDAL coiDetailDAL = new COIDetailDAL();
+            return coiDetailDAL.GetCOIByStatus(id);
+        }
+
+        [Route("api/COIDetail/GetCOIByNamaStatus/{nama}")]
+        public IEnumerable<COIDetail> GetCOIByNamaStatus(string nama)
+        {
+            COIDetailDAL coiDetailDAL = new COIDetailDAL();
+            return coiDetailDAL.GetCOIByNamaStatus(nama);
+        }
+
+        // GET: api/COIDetail/5
+        public COIDetail Get(string id)
+        {
+            COIDetailDAL coiDetailDAL = new COIDetailDAL();
+            return coiDetailDAL.GetCOIById(id);
         }
 
         // POST: api/COIDetail
@@ -37,8 +52,18 @@ namespace PTMBackend.Controllers
         }
 
         // PUT: api/COIDetail/5
-        public void Put(int id, [FromBody]string value)
+        public IHttpActionResult Put(string id, COIDetail model)
         {
+            COIDetailDAL coiDetailDAL = new COIDetailDAL();
+            try
+            {
+                coiDetailDAL.Update(id, model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // DELETE: api/COIDetail/5
